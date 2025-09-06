@@ -1,30 +1,68 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-
-export interface User {
-  id?: number;
-  name: string;
-  email: string;
-  phone: string;
-  password: string;
-}
+import { Observable, tap } from 'rxjs';
+import { Tenant } from './tenant';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Auth {
 
-  private apiUrl = 'http://localhost:3000/users';
+  private readonly tokenKey = 'auth_token';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private tenantService: Tenant) { }
 
-  register(user: User): Observable<User> {
-    return this.http.post<User>(this.apiUrl, user);
+  // Login API call
+  login(email: string, password: string): Observable<any> {
+    return this.http.post('/api/auth/login', { email, password })
+      .pipe(
+        tap((response: any) => {
+          this.saveToken(response.token);              // save JWT
+          this.tenantService.setTenant(response.user.gym_id); // save gym_id
+        })
+      );
   }
 
-  login(email: string, password: string): Observable<User[]> {
-    return this.http.get<User[]>(`${this.apiUrl}?email=${email}&password=${password}`)
+  // Helper: save token manually (optional)
+  saveToken(token: string): void {
+    localStorage.setItem(this.tokenKey, token);
+  }
+
+  private loginSuccess(response: any) {
+    localStorage.setItem(this.tokenKey, response.token);
+    this.tenantService.setTenant(response.user.gym_id);
+  }
+
+  logout() {
+    localStorage.removeItem(this.tokenKey);
+    this.tenantService.clearTenant();
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem(this.tokenKey)
+  }
+
+  // Decode JWT payload
+  getDecodedToken(): any {
+    const token = this.getToken();
+    if (!token) return null;
+    try {
+      return JSON.parse(atob(token.split('.')[1]));
+    } catch (err) {
+      console.error('Invalid token', err);
+      return null;
+    }
+  }
+
+  // Current logged-in user info
+  getCurrentUser() {
+    return this.getDecodedToken();
+  }
+
+  // Check if user is logged in
+  isLoggedIn(): boolean {
+    const user = this.getDecodedToken();
+    return !!user && Date.now() < user.exp * 1000; // check expiry
   }
 
 }

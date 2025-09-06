@@ -1,27 +1,59 @@
-<div class="container mt-5" style="max-width: 400px;">
-    <h2 class="mb-4 text-center">Register</h2>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg p-4">
+                <h3 class="text-center mb-4">Register Gym</h3>
 
-    <form (ngSubmit)="onRegister()" #registerForm="ngForm">
-        <div class="mb-3">
-            <label>Name</label>
-            <input type="text" class="form-control" [(ngModel)]="user.name" name="name" required />
+                <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+                    <!-- Owner Name -->
+                    <div class="mb-3">
+                        <label class="form-label">Owner Name</label>
+                        <input type="text" class="form-control" [(ngModel)]="ownerName" name="ownerName" required
+                            placeholder="Enter your full name">
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" [(ngModel)]="email" name="email" required
+                            placeholder="Enter your email">
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" [(ngModel)]="password" name="password" required
+                            minlength="6" placeholder="Enter a password">
+                    </div>
+
+                    <!-- Gym Name -->
+                    <div class="mb-3">
+                        <label class="form-label">Gym Name</label>
+                        <input type="text" class="form-control" [(ngModel)]="gymName" name="gymName" required
+                            placeholder="Enter gym name">
+                    </div>
+
+                    <!-- Gym Address -->
+                    <div class="mb-3">
+                        <label class="form-label">Gym Address</label>
+                        <textarea class="form-control" [(ngModel)]="gymAddress" name="gymAddress" rows="3" required
+                            placeholder="Enter gym address"></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">
+                            Register
+                        </button>
+                    </div>
+
+                    <!-- Link to Login -->
+                    <p class="text-center mt-3">
+                        Already have an account?
+                        <a routerLink="/auth/login">Login here</a>
+                    </p>
+                </form>
+            </div>
         </div>
-
-        <div class="mb-3">
-            <label>Email</label>
-            <input type="email" class="form-control" [(ngModel)]="user.email" name="email" required />
-        </div>
-
-        <div class="mb-3">
-            <label>Phone</label>
-            <input type="text" class="form-control" [(ngModel)]="user.phone" name="phone" required />
-        </div>
-
-        <div class="mb-3">
-            <label>Password</label>
-            <input type="password" class="form-control" [(ngModel)]="user.password" name="password" required />
-        </div>
-
-        <button type="submit" class="btn btn-success w-100">Register</button>
-    </form>
+    </div>
 </div>

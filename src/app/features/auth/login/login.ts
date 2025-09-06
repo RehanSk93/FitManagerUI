@@ -12,26 +12,35 @@ export class Login {
 
   email = '';
   password = '';
+  loading = false;
+  errorMessage = '';
 
-  constructor(private authService: Auth, private router: Router) {}
+  constructor(
+    private authService: Auth,
+    private router: Router
+  ) { }
 
   onLogin() {
-    if (this.email && this.password) {
-      this.authService.login(this.email, this.password).subscribe(users => {
-        if (users.length > 0) {
-          // login success
-          localStorage.setItem('token', 'fake-jwt-token'); // simple token
-          localStorage.setItem('user', JSON.stringify(users[0])); // store logged-in user
-          this.router.navigate(['/dashboard']);
-        } else {
-          alert('Invalid email or password');
-        }
-      }, err => {
-        console.error(err);
-        alert('Login failed!');
-      });
-    } else {
-      alert('Email and password are required');
-    }
+    this.loading = true;
+    this.errorMessage = '';
+
+    this.authService.login(this.email, this.password).subscribe({
+      next: (response: any) => {
+        this.loading = false;
+        console.log('Login-', response);
+        
+        // Redirect based on role
+        const role = response.user.role;
+        if (role === 'admin') this.router.navigate(['/dashboard/admin']);
+        else if (role === 'trainer') this.router.navigate(['/dashboard/trainer']);
+        else if (role === 'receptionist') this.router.navigate(['/dashboard/receptionist']);
+        else this.router.navigate(['/dashboard']);
+      },
+      error: (err) => {
+        this.loading = false;
+        console.error('Login failed', err);
+        this.errorMessage = 'Invalid email or password';
+      }
+    })
   }
 }

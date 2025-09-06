@@ -1,11 +1,69 @@
 {
+  "gyms": [
+    {
+      "gym_id": 101,
+      "gym_name": "PowerHouse",
+      "id": "3e7a"
+    },
+    {
+      "gym_id": 102,
+      "gym_name": "FitPro Club",
+      "id": "9b3c"
+    },
+    {
+      "id": "16f4",
+      "gym_name": "rehanSk"
+    },
+    {
+      "id": "7290",
+      "gym_id": 1756886931408,
+      "gym_name": "skazam"
+    }
+  ],
   "users": [
     {
-      "id": "84e7",
-      "name": "Sk Azam",
-      "email": "rehansk93@gmail.com",
+      "id": "1",
+      "name": "Raj Sharma",
+      "email": "admin@powerhouse.com",
+      "phone": "9999999999",
+      "password": "12345",
+      "role": "ADMIN",
+      "gym_id": 101
+    },
+    {
+      "id": "2",
+      "name": "Amit",
+      "email": "reception@powerhouse.com",
+      "phone": "8888888888",
+      "password": "12345",
+      "role": "RECEPTIONIST",
+      "gym_id": 101
+    },
+    {
+      "id": "3",
+      "name": "Vikas",
+      "email": "trainer@powerhouse.com",
+      "phone": "7777777777",
+      "password": "12345",
+      "role": "TRAINER",
+      "gym_id": 101
+    },
+    {
+      "id": "97e0",
+      "name": "Rehan",
+      "email": "rehansk@gmail.com",
+      "phone": "12345",
+      "password": "1234",
+      "role": "ADMIN"
+    },
+    {
+      "id": "3b24",
+      "name": "Azam",
+      "email": "sk.azmin786@gmail.com",
       "phone": "6295939188",
-      "password": "1234"
+      "password": "1234",
+      "role": "ADMIN",
+      "gym_id": 1756886931408
     }
   ]
 }

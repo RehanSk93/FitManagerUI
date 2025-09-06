@@ -1,5 +1,5 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { Auth, User } from '../../../core/services/auth';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,21 +10,32 @@ import { Router } from '@angular/router';
 })
 export class Register {
 
-  user: User = { name: '', email: '', phone: '', password: '' };
+  ownerName = '';
+  email = '';
+  password = '';
+  gymName = '';
+  gymAddress = '';
 
-  constructor(private authService: Auth, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   onRegister() {
-    if (this.user.name && this.user.email && this.user.phone && this.user.password) {
-      this.authService.register(this.user).subscribe(() => {
-        alert('Registration successful!');
-        this.router.navigate(['/auth/login']);
-      }, err => {
-        console.error(err);
-        alert('Registration failed!');
+    const payload = {
+      ownerName: this.ownerName,
+      email: this.email,
+      password: this.password,
+      gymName: this.gymName,
+      gymAddress: this.gymAddress
+    };
+
+    this.http.post('/api/auth/register', payload)
+      .subscribe({
+        next: () => {
+          alert('Registration successful! Please login.');
+          this.router.navigate(['/auth/login']);
+        },
+        error: (err) => console.error('Registration failed', err)
       });
-    } else {
-      alert('All fields are required!');
-    }
   }
+
+
 }

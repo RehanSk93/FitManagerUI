@@ -1,0 +1,10 @@
+<nav class="navbar">
+    <div class="navbar-left">
+        <a routerLink="/dashboard">🏋️ Gym SaaS</a>
+    </div>
+
+    <div class="navbar-right">
+        <span *ngIf="userName">Hello, {{ userName }}</span>
+        <button (click)="logout()">Logout</button>
+    </div>
+</nav>
